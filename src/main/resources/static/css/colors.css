@@ -1,0 +1,40 @@
+.white{
+    background-color: white;
+}
+
+.black{
+  background-color: black;
+}
+
+.red{
+  background-color: var(--red);
+}
+
+.blue{
+  background-color: var(--blue);
+}
+
+.btl{
+  background-color: var(--btl);
+}
+
+.btd{
+  background-color: var(--btd);
+}
+
+:root{
+  --red: #E63946;
+  --btl: #F1FAEE;
+  --btd: #A8DADC;
+  --tc: #1D3557;
+  --blue: #457B9D;
+  --light1: #F8F9FA;
+  --light2: #E9ECEF;
+  --light3: #DEE2E6;
+  --light4: #CED4DA;
+  --light5: #ADB5BD;
+  --light6: #6C757D;
+  --dark1: #495057;
+  --dark2: #343A40;
+  --dark3: #212529;
+}

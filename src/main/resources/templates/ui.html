@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>DHTe UI</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="css/colors.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="main_container" style="display:flex; flex-direction:column; justify-content: center; width:100wh;">
+        <form class="" action="ui/boot" method="post">
+          <input type="text" name="boot_argument" value="" placeholder="boot argument">
+          <input class="button" type="submit" name="" value="go">
+        </form>
+        <form class="" action="ui/search" method="post">
+          <span>search</span>
+          <input type="text" name="find_rule" value="" placeholder="find_rule">
+            <input type="text" name="file_name" value="" placeholder="file_name">
+          <input type="text" name="store_path" value="" placeholder="store_path">
+          <input class="button" type="submit" name="" value="go">
+        </form>
+        <form class="" action="ui/publish" method="post">
+          <span>publish</span>
+          <input type="text" name="find_rule" value="" placeholder="find_rule">
+          <input type="text" name="file_name" value="" placeholder="file_name">
+          <input type="text" name="store_path" value="" placeholder="store_path">
+          <input class="button" type="submit" name="" value="go">
+        </form>
+    </div>
+    <img class="back" src="resources/back.png" alt="">
+</body>
+</html>

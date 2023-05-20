@@ -1,0 +1,8 @@
+/*C1*/SET SCHEMA SYSTEM_LOBS
+INSERT INTO BLOCKS VALUES(0,2147483647,0)
+COMMIT
+/*C2*/SET SCHEMA PUBLIC
+create table nodes (id bigint not null, hash varchar(255), host varchar(255), primary key (id))
+create table resources (id bigint not null, hash varchar(255), name varchar(255), path varchar(255), primary key (id))
+create table resources_mapping (id bigint not null, hash varchar(255), host varchar(255), primary key (id))
+create sequence hibernate_sequence start with 1 increment by 1
