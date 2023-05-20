@@ -3,20 +3,20 @@
 <head>
     <title>DHTe UI</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="../static/css/colors.css">
-    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="../css/colors.css">
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
-    <form class="main_container" action="ui" method="get" style="display:flex; flex-direction:column; justify-content: space-around; align-items: center; width:100wh; height:100vh">
+    <form class="main_container" action="../ui" method="get" style="display:flex; flex-direction:column; justify-content: space-around; align-items: center; width:100wh; height:100vh">
       <span style="font-size:8em; opacity: 0.33">Ошибочка!</span>
     </div>
     <div class="">
-      Описание ошибки
+        <pre th:text="${error}"></pre>
     </div>
     <div class="">
       <input class="button" type="submit" name="" value="Назад">
     </div>
   </form>
-  <img class="back" src="../static/resources/back.png" alt="">
+  <img class="back" src="../resources/back.png" alt="">
 </body>
 </html>
