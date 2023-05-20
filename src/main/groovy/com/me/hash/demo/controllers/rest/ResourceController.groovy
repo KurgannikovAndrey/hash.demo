@@ -24,12 +24,12 @@ class ResourceController {
     }
 
     @PostMapping("/retrieve")
-    public String getResource(@RequestBody String resource) {//JSON status + bytes response
+    public @ResponseBody byte[] getResource(@RequestBody String resource) {
         println "processing get resource, resource : ${resource}"
         def resourceJson = new JsonSlurper().parseText(resource)
         def file = service.getResource(new ResourceRestEntity(SHAId.fromTransportBytesRepresentation(resourceJson.hash).hash, resourceJson.host, resourceJson.name))
-        def status = file ? 'found' : 'not found'
-        new Gson().toJson([status: status, file: new String(file)])
+        println "posting file content : ${file.hashCode()}"
+        file
     }
 
     @PostMapping("/getHost")

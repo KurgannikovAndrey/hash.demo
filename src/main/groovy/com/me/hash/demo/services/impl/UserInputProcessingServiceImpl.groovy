@@ -61,7 +61,7 @@ class UserInputProcessingServiceImpl implements UserInputProcessingService{
         def host = callGetHostFromHost(target.host, resourceHash.hash)
         println "found host : ${host.host}"
         println "download resource ${fileName} ${SHAId.toBInt(resourceHash.hash)} from ${host.host}}"
-        def data = (callGetFileFromHost(host.host as String, resourceHash.hash, fileName).file as String).bytes as byte[]
+        def data = callGetFileFromHost(host.host as String, resourceHash.hash, fileName)
         def file = new File(storePath)
         if (!file.exists()) {
             file.createNewFile()
@@ -92,8 +92,8 @@ class UserInputProcessingServiceImpl implements UserInputProcessingService{
             type ContentType.TEXT
             text new Gson().toJson(entityToPost)
         }
-        println "call get file url : ${response.request.url} request ${response.request.contentAsString} response ${response.contentAsString}"
-        jsonSlurper.parse(response.data) as Map
+        println "call get file url : ${response.request.url} request ${response.request.contentAsString} data ${response.data.hashCode()}"
+        response.data
     }
 
     def callGetHostFromHost (String host, String hash) {
