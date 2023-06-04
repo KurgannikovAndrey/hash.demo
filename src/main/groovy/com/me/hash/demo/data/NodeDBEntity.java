@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "nodes")
@@ -37,5 +38,18 @@ public class NodeDBEntity {
                 ", hash='" + hash + '\'' +
                 ", special='" + special + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NodeDBEntity that = (NodeDBEntity) o;
+        return id == that.id && Objects.equals(host, that.host) && Objects.equals(hash, that.hash) && Objects.equals(special, that.special);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, host, hash, special);
     }
 }

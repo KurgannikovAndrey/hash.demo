@@ -46,9 +46,23 @@ class SHAId {
         new BigInteger(hash.bytes).abs()
     }
 
-
     @Override
     public String toString() {
         return "SHAId{int = ${new BigInteger(hash.bytes).abs()}";
+    }
+
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (getClass() != o.class) return false
+
+        SHAId shaId = (SHAId) o
+
+        if (hash != shaId.hash) return false
+
+        return true
+    }
+
+    int hashCode() {
+        return (hash != null ? hash.hashCode() : 0)
     }
 }

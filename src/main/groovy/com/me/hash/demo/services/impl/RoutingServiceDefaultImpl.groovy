@@ -21,14 +21,22 @@ import wslite.rest.Response
 
 @Service
 class RoutingServiceDefaultImpl implements RoutingService {
-    @Autowired
+
     NodesRepo nodesRepo
 
-    @Autowired
     PropertiesRepo propertiesRepo
 
-    @Autowired
     ResourceService resourceService
+
+    public RoutingServiceDefaultImpl(@Autowired NodesRepo nodesRepo, @Autowired PropertiesRepo propertiesRepo, @Autowired ResourceService resourceService ) {
+        this.nodesRepo = nodesRepo
+        this.propertiesRepo = propertiesRepo
+        this.resourceService = resourceService
+    }
+
+    public String testExample(){
+        return nodesRepo.toString()
+    }
 
     @Override
     public HostRestEntity findByHash(SHAId id) {
@@ -46,22 +54,25 @@ class RoutingServiceDefaultImpl implements RoutingService {
     }
 
     @Override
-    void refill() {
+    def refill() {
         println "refill"
         def myHash = propertiesRepo.findByName('myHash').get(0).value
         def prev = nodesRepo.findBySpecial('prev').get(0)
         validateHost(prev)
-        def next = nodesRepo.findBySpecial('prev').get(0)
+        def next = nodesRepo.findBySpecial('next').get(0)
         validateHost(next)
         nodesRepo.deleteBySpecialIsNull()
+        def nodesList = [nodesRepo.findBySpecial('current').get(0), next, prev]
         (0..160).each {
             def targetHash = SHAId.sum(myHash, it)
             def target = findByHash(targetHash)
             def toSave = new NodeDBEntity()
             toSave.hash = target.hash
             toSave.host = target.host
+            nodesList.add(toSave)
             nodesRepo.save(toSave)
         }
+        return nodesList
     }
 
     @Override
@@ -135,7 +146,7 @@ class RoutingServiceDefaultImpl implements RoutingService {
         def jsonSlurper = new JsonSlurper()
         def response
         try {
-            response = client.post(path: "/routing/get", query : [hash : hash.bytes.toString()])//hash.bytes.toString()
+            response = client.post(path: "/routing/get", query : [hash : hash.bytes.toString()])
         } catch (RESTClientException e) {
             System.err.println("request ${e?.request?.url} ${e?.request?.contentAsString} response ${e?.response?.contentAsString}")
         }
@@ -216,11 +227,11 @@ class RoutingServiceDefaultImpl implements RoutingService {
     }
 
     def validateHost(NodeDBEntity entity){
-        def client = new RESTClient(entity.host)
         try {
-            client.get(path : "/routing/ping")
+            callPingOnHost(entity)
+            return entity
         } catch (RESTClientException e) {
-            println "error during ping ${entity} : ${e.response.statusCode} ${e.response.statusMessage}"
+            println "error during ping ${entity} : ${e?.response?.statusCode} ${e?.response?.statusMessage}"
             nodesRepo.delete(entity)
             def find = findByHash(SHAId.from(entity.hash))
             println "find host ${find}"
@@ -229,6 +240,12 @@ class RoutingServiceDefaultImpl implements RoutingService {
             toSave.hash = find.hash
             toSave.special = entity.special
             nodesRepo.save(toSave)
+            return toSave
         }
+    }
+
+    def callPingOnHost(NodeDBEntity entity) throws RESTClientException {
+        def client = new RESTClient(entity.host)
+        client.get(path : "/routing/ping")
     }
 }
